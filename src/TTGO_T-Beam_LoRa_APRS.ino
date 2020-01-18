@@ -112,7 +112,7 @@ const byte RX_en  = 0;       //TX/RX enable 1W modul
 
 // LED for signalling
 #ifdef T_BEAM_V1_0
-   const byte TXLED  = 33;      //pin number for LED on TX Tracker
+   const byte TXLED  = 15;      //pin number for LED on TX Tracker
 #else
    const byte TXLED  = 14;      //pin number for LED on TX Tracker
  #endif
