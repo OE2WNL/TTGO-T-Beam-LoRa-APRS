@@ -683,7 +683,7 @@ switch(tracker_mode) {
     outString += "b......DHT22";
     break;
   case WX_TRACKER:
-    if (wx) {
+    if (wx) { //use wxTcall for APRS message
       hum = dht.getHumidity();
       tempf = dht.getTemperature()*9/5+32;
       for (i=0; i<wxTcall.length();++i){  // remove unneeded "spaces" from callsign field
@@ -721,7 +721,7 @@ switch(tracker_mode) {
       outString += helper;
       outString += "b......DHT22";
       wx = !wx;
-    } else {
+    } else { //use Tcall for APRS message
       for (i=0; i<Tcall.length();++i){  // remove unneeded "spaces" from callsign field
         if (Tcall.charAt(i) != ' ') {
           outString += Tcall.charAt(i);
