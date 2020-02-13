@@ -24,8 +24,8 @@
 // first released version
 
 // SET HW version
-// #define T_BEAM_V1_0    // use this for newer Boards AKA Rev1 (second board release)
-#define T_BEAM_V0_7    // use this for older Boards AKA Rev0.x (first board release)
+#define T_BEAM_V1_0    // use this for newer Boards AKA Rev1 (second board release)
+// #define T_BEAM_V0_7    // use this for older Boards AKA Rev0.x (first board release)
 
 // SET temperature sensor type
 // #define DS18B20    // use this if you use DS18B20, default ist DHT22
@@ -34,10 +34,10 @@
 // IF NOT CHANGED you have to go through the configuration routine at first boot up of the TTGO T-Beam
 
 // #define DONT_USE_FLASH_MEMORY   // uncomment if you don't want to use Flashmemory - instead data below must be corrected
-#define CALLSIGN "OE1XYZ-0"     // enter your callsign here - less then 6 letter callsigns please add "spaces" so total length is 6 (without SSID)
-#define WX_CALLSIGN "OE1XYZ-0"  // use same callsign but you can use different SSID
-#define LONGITUDE_PRESET "01539.85E" // please in APRS notation DDDMM.mmE or DDDMM.mmW
-#define LATIDUDE_PRESET "4813.62N"   // please in APRS notation DDMM.mmN or DDMM.mmS
+#define CALLSIGN "OE2WNL-8"     // enter your callsign here - less then 6 letter callsigns please add "spaces" so total length is 6 (without SSID)
+#define WX_CALLSIGN "OE2WNL-0"  // use same callsign but you can use different SSID
+#define LONGITUDE_PRESET "01250.09E" // please in APRS notation DDDMM.mmE or DDDMM.mmW
+#define LATIDUDE_PRESET "4726.03N"   // please in APRS notation DDMM.mmN or DDMM.mmS
 #define APRS_SYMBOL ">"         // other symbols are
                                 // "_" => Weather Station
                                 // ">" => CAR
@@ -46,5 +46,7 @@
                                 // "<" => MOTORCYCLE
 
 // TRANSMIT INTERVAL
-unsigned long max_time_to_nextTX = 300000L;   // set here MAXIMUM time in ms(!) for smart beaconing - minimum time is always 1 min = 60 secs = 60000L !!!
+unsigned long max_time_to_nextTX = 60000L;   // set here MAXIMUM time in ms(!) for smart beaconing - minimum time is always 1 min = 60 secs = 60000L !!!
                                 // when entering 60000L intervall is fixed to 1 min
+
+bool SUSPEND_TX_WHEN_NOT_MOVING = true; //when average speed is to low - suspend tx

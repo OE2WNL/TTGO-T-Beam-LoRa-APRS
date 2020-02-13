@@ -545,6 +545,7 @@ void loop() {
       old_course = new_course;
     }
 
+  //so: tracker_mode == WX_FIXED
   } else {
     LatShown = LatFixed;
     LongShown = LongFixed;
@@ -565,30 +566,38 @@ void loop() {
     if (tracker_mode != WX_FIXED) {
       // if (gps.location.isValid()) {
       if (gps.location.age() < 2000) {
-        digitalWrite(TXLED, HIGH);
-        if (hum_temp) {
-          writedisplaytext(" ((TX))","","LAT: "+LatShown,"LON: "+LongShown,"SPD: "+String(gps.speed.kmph(),1)+"  CRS: "+String(gps.course.deg(),1),"BAT: "+String(BattVolts,1)+"  HUM: "+String(hum,1),0);
-        } else {
-          writedisplaytext(" ((TX))","","LAT: "+LatShown,"LON: "+LongShown,"SPD: "+String(gps.speed.kmph(),1)+"  CRS: "+String(gps.course.deg(),1),"SAT: "+String(gps.satellites.value())+"   TEMP: "+String(temp,1),0);
+        if (SUSPEND_TX_WHEN_NOT_MOVING && TxSymbol == ">" && average_speed_final < 1.0){ //if Option setted, and Symbol is Car and average speed < 1.0
+          lastTX = millis();
+          Serial.print("TX suspended because we are not moving.");
+          Serial.print("average_speed_final: ");
+          Serial.println(average_speed_final);
+          writedisplaytext(" "+Tcall,"(TX) suspended.","Reason:", "Not moving"," "," ",0);
+        } else{
+          digitalWrite(TXLED, HIGH);
+          if (hum_temp) {
+            writedisplaytext(" ((TX))","","LAT: "+LatShown,"LON: "+LongShown,"SPD: "+String(gps.speed.kmph(),1)+"  CRS: "+String(gps.course.deg(),1),"BAT: "+String(BattVolts,1)+"  HUM: "+String(hum,1),0);
+          } else {
+            writedisplaytext(" ((TX))","","LAT: "+LatShown,"LON: "+LongShown,"SPD: "+String(gps.speed.kmph(),1)+"  CRS: "+String(gps.course.deg(),1),"SAT: "+String(gps.satellites.value())+"   TEMP: "+String(temp,1),0);
+          }
+          sendpacket();
+          Serial.print("((TX)) / LAT: ");
+          Serial.print(LatShown);
+          Serial.print(" / LON: ");
+          Serial.print(LongShown);
+          Serial.print(" / SPD: ");
+          Serial.print(String(gps.speed.kmph(),1));
+          Serial.print(" / CRS: ");
+          Serial.print(String(gps.course.deg(),1));
+          Serial.print(" / SAT: ");
+          Serial.print(String(gps.satellites.value()));
+          Serial.print(" / BAT: ");
+          Serial.print(String(BattVolts,1));
+          Serial.print(" / TEMP: ");
+          Serial.print(String(temp,1));
+          Serial.print(" / HUM: ");
+          Serial.println(String(hum,1));
+          digitalWrite(TXLED, LOW);
         }
-        sendpacket();
-        Serial.print("((TX)) / LAT: ");
-        Serial.print(LatShown);
-        Serial.print(" / LON: ");
-        Serial.print(LongShown);
-        Serial.print(" / SPD: ");
-        Serial.print(String(gps.speed.kmph(),1));
-        Serial.print(" / CRS: ");
-        Serial.print(String(gps.course.deg(),1));
-        Serial.print(" / SAT: ");
-        Serial.print(String(gps.satellites.value()));
-        Serial.print(" / BAT: ");
-        Serial.print(String(BattVolts,1));
-        Serial.print(" / TEMP: ");
-        Serial.print(String(temp,1));
-        Serial.print(" / HUM: ");
-        Serial.println(String(hum,1));
-        digitalWrite(TXLED, LOW);
       } else {
         if (hum_temp) {
           writedisplaytext(" "+Tcall,"(TX) at valid GPS","LAT: not valid","LON: not valid","SPD: ---  CRS: ---","BAT: "+String(BattVolts,1)+"  HUM: "+String(hum,1),0);
@@ -747,11 +756,6 @@ switch(tracker_mode) {
     outString += "b......DHT22";
     break;
   case WX_TRACKER:
-<<<<<<< HEAD
-    if (wx) { //use wxTcall for APRS message
-      hum = dht.getHumidity();
-      tempf = dht.getTemperature()*9/5+32;
-=======
     if (wx) {
       #ifdef DS18B20
         sensors.requestTemperatures(); // Send the command to get temperature readings
@@ -761,7 +765,6 @@ switch(tracker_mode) {
         hum = dht.getHumidity();
         tempf = dht.getTemperature()*9/5+32;
       #endif
->>>>>>> c8cff5787b206a774738893722a1b0bb4c15433a
       for (i=0; i<wxTcall.length();++i){  // remove unneeded "spaces" from callsign field
         if (wxTcall.charAt(i) != ' ') {
           outString += wxTcall.charAt(i);
