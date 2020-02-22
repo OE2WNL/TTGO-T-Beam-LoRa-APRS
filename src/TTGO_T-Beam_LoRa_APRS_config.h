@@ -48,5 +48,3 @@
 // TRANSMIT INTERVAL
 unsigned long max_time_to_nextTX = 60000L;   // set here MAXIMUM time in ms(!) for smart beaconing - minimum time is always 1 min = 60 secs = 60000L !!!
                                 // when entering 60000L intervall is fixed to 1 min
-
-bool SUSPEND_TX_WHEN_NOT_MOVING = true; //when average speed is to low - suspend tx
